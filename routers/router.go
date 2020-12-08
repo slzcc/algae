@@ -56,9 +56,12 @@ func LRouter(router *gin.Engine) {
 		v1.NodesInfo(nodes_api)
 	}
 
-	istio_api := router.Group("/api/istio.k8s.io/v1beta1")
+	istio_api := router.Group("/api/networking.istio.io/v1beta1")
 	{
-		istio.IstioInfo(istio_api)
+		istio.VirtualServicesListInfo(istio_api)
+		istio.GatewaysListInfo(istio_api)
+		istio.DestinationRulesListInfo(istio_api)
+		istio.ServiceEntrysListInfo(istio_api)
 	}
 
 }
