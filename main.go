@@ -6,7 +6,9 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	LRouter "github.com/slzcc/algae/routers"
+	"github.com/slzcc/algae/routers/istio"
+	"github.com/slzcc/algae/routers/k8s"
+	"github.com/slzcc/algae/routers/metrics"
 )
 
 func main() {
@@ -16,7 +18,9 @@ func main() {
 	//跨域
 	engine.Use(Cors())
 
-	LRouter.LRouter(engine)
+	istio.LRouter(engine)
+	k8s.LRouter(engine)
+	metrics.LRouter(engine)
 
 	engine.Run(":5801")
 }

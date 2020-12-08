@@ -1,4 +1,4 @@
-package controllers
+package k8s
 
 import (
 	"context"
@@ -12,13 +12,13 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 )
 
-func ConfigMapList(c *gin.Context) {
+func ResourceQuotaList(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 
 	clientset := utils.KubernetesAuth()
 
-	data, err := clientset.CoreV1().ConfigMaps(namespace).List(context.TODO(), metav1.ListOptions{})
+	data, err := clientset.CoreV1().ResourceQuotas(namespace).List(context.TODO(), metav1.ListOptions{})
 
 	if err != nil {
 		panic(err.Error())
@@ -27,13 +27,13 @@ func ConfigMapList(c *gin.Context) {
 	c.JSON(200, data)
 }
 
-func ConfigMapInfo(c *gin.Context) {
+func ResourceQuotaInfo(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	name := c.Param("name")
 
 	clientset := utils.KubernetesAuth()
-	data, err := clientset.CoreV1().ConfigMaps(namespace).Get(context.TODO(), name, metav1.GetOptions{})
+	data, err := clientset.CoreV1().ResourceQuotas(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 
 	if err != nil {
 		panic(err.Error())
@@ -42,7 +42,7 @@ func ConfigMapInfo(c *gin.Context) {
 	c.JSON(200, data)
 }
 
-func ConfigMapModify(c *gin.Context) {
+func ResourceQuotaModify(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	name := c.Param("name")
@@ -69,7 +69,7 @@ func ConfigMapModify(c *gin.Context) {
 	})
 }
 
-func ConfigMapCreate(c *gin.Context) {
+func ResourceQuotaCreate(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	object := c.PostForm("object")
@@ -91,7 +91,7 @@ func ConfigMapCreate(c *gin.Context) {
 	})
 }
 
-func ConfigMapDelete(c *gin.Context) {
+func ResourceQuotaDelete(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	name := c.Param("name")

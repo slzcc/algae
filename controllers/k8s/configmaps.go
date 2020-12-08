@@ -1,4 +1,4 @@
-package controllers
+package k8s
 
 import (
 	"context"
@@ -12,13 +12,13 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 )
 
-func LimitRangeList(c *gin.Context) {
+func ConfigMapList(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 
 	clientset := utils.KubernetesAuth()
 
-	data, err := clientset.CoreV1().LimitRanges(namespace).List(context.TODO(), metav1.ListOptions{})
+	data, err := clientset.CoreV1().ConfigMaps(namespace).List(context.TODO(), metav1.ListOptions{})
 
 	if err != nil {
 		panic(err.Error())
@@ -27,13 +27,13 @@ func LimitRangeList(c *gin.Context) {
 	c.JSON(200, data)
 }
 
-func LimitRangeInfo(c *gin.Context) {
+func ConfigMapInfo(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	name := c.Param("name")
 
 	clientset := utils.KubernetesAuth()
-	data, err := clientset.CoreV1().LimitRanges(namespace).Get(context.TODO(), name, metav1.GetOptions{})
+	data, err := clientset.CoreV1().ConfigMaps(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 
 	if err != nil {
 		panic(err.Error())
@@ -42,7 +42,7 @@ func LimitRangeInfo(c *gin.Context) {
 	c.JSON(200, data)
 }
 
-func LimitRangeModify(c *gin.Context) {
+func ConfigMapModify(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	name := c.Param("name")
@@ -69,7 +69,7 @@ func LimitRangeModify(c *gin.Context) {
 	})
 }
 
-func LimitRangeCreate(c *gin.Context) {
+func ConfigMapCreate(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	object := c.PostForm("object")
@@ -91,7 +91,7 @@ func LimitRangeCreate(c *gin.Context) {
 	})
 }
 
-func LimitRangeDelete(c *gin.Context) {
+func ConfigMapDelete(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	name := c.Param("name")

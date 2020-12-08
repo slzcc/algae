@@ -1,16 +1,16 @@
-package controllers
+package k8s
 
 import (
 	"context"
 
 	"github.com/gin-gonic/gin"
 	"github.com/slzcc/algae/utils"
-	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func NodeList(c *gin.Context) {
 	clientset := utils.KubernetesAuth()
-	data, err := clientset.CoreV1().Nodes().List(context.TODO(), meta_v1.ListOptions{})
+	data, err := clientset.CoreV1().Nodes().List(context.TODO(), metav1.ListOptions{})
 
 	if err != nil {
 		panic(err.Error())
@@ -22,7 +22,7 @@ func NodeList(c *gin.Context) {
 func NodeInfo(c *gin.Context) {
 	nodes := c.Param("name")
 	clientset := utils.KubernetesAuth()
-	data, err := clientset.CoreV1().Nodes().Get(context.TODO(), nodes, meta_v1.GetOptions{})
+	data, err := clientset.CoreV1().Nodes().Get(context.TODO(), nodes, metav1.GetOptions{})
 	if err != nil {
 		panic(err.Error())
 	}

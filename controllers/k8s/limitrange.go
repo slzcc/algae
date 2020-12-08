@@ -1,4 +1,4 @@
-package controllers
+package k8s
 
 import (
 	"context"
@@ -12,13 +12,13 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 )
 
-func ResourceQuotaList(c *gin.Context) {
+func LimitRangeList(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 
 	clientset := utils.KubernetesAuth()
 
-	data, err := clientset.CoreV1().ResourceQuotas(namespace).List(context.TODO(), metav1.ListOptions{})
+	data, err := clientset.CoreV1().LimitRanges(namespace).List(context.TODO(), metav1.ListOptions{})
 
 	if err != nil {
 		panic(err.Error())
@@ -27,13 +27,13 @@ func ResourceQuotaList(c *gin.Context) {
 	c.JSON(200, data)
 }
 
-func ResourceQuotaInfo(c *gin.Context) {
+func LimitRangeInfo(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	name := c.Param("name")
 
 	clientset := utils.KubernetesAuth()
-	data, err := clientset.CoreV1().ResourceQuotas(namespace).Get(context.TODO(), name, metav1.GetOptions{})
+	data, err := clientset.CoreV1().LimitRanges(namespace).Get(context.TODO(), name, metav1.GetOptions{})
 
 	if err != nil {
 		panic(err.Error())
@@ -42,7 +42,7 @@ func ResourceQuotaInfo(c *gin.Context) {
 	c.JSON(200, data)
 }
 
-func ResourceQuotaModify(c *gin.Context) {
+func LimitRangeModify(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	name := c.Param("name")
@@ -69,7 +69,7 @@ func ResourceQuotaModify(c *gin.Context) {
 	})
 }
 
-func ResourceQuotaCreate(c *gin.Context) {
+func LimitRangeCreate(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	object := c.PostForm("object")
@@ -91,7 +91,7 @@ func ResourceQuotaCreate(c *gin.Context) {
 	})
 }
 
-func ResourceQuotaDelete(c *gin.Context) {
+func LimitRangeDelete(c *gin.Context) {
 
 	namespace := c.Param("namespaces")
 	name := c.Param("name")

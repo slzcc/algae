@@ -1,10 +1,8 @@
-package routers
+package k8s
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/slzcc/algae/api/istio"
-	"github.com/slzcc/algae/api/metrics"
-	v1 "github.com/slzcc/algae/api/v1"
+	"github.com/slzcc/algae/api/k8s/v1"
 )
 
 func LRouter(router *gin.Engine) {
@@ -43,25 +41,11 @@ func LRouter(router *gin.Engine) {
 		v1.EventList(namespaces_api)
 		v1.EventInfo(namespaces_api)
 	}
-
-	metrics_api := router.Group("/api/metrics.k8s.io/v1beta1")
-	{
-		metrics.MetricsNodes(metrics_api)
-		metrics.MetricsPods(metrics_api)
-	}
-
+	
 	nodes_api := router.Group("/api/v1/nodes")
 	{
 		v1.NodesList(nodes_api)
 		v1.NodesInfo(nodes_api)
-	}
-
-	istio_api := router.Group("/api/networking.istio.io/v1beta1")
-	{
-		istio.VirtualServicesListInfo(istio_api)
-		istio.GatewaysListInfo(istio_api)
-		istio.DestinationRulesListInfo(istio_api)
-		istio.ServiceEntrysListInfo(istio_api)
 	}
 
 }
