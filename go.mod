@@ -16,7 +16,7 @@ require (
 )
 
 replace (
-	k8s.io/api => github.com/kubernetes/api v0.18.1
-	k8s.io/apimachinery => github.com/kubernetes/apimachinery v0.18.1
-	k8s.io/client-go => github.com/kubernetes/client-go v0.18.1
+	k8s.io/api => github.com/kubernetes/api v0.19.4
+	k8s.io/apimachinery => github.com/kubernetes/apimachinery v0.19.4
+	k8s.io/client-go => github.com/kubernetes/client-go v0.19.4
 )
