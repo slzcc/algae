@@ -1,0 +1,52 @@
+{
+    "template": {
+        "docs": "http://192.168.6.70/opsdev/devops-pipeline-template",
+        "type": "default"
+    },
+    "department": {
+        "name": "devops",
+        "leader": ""
+    },
+    "deploy": {
+        "service": {
+            "name": "algae",
+            "version": "1.0.0",
+            "language": {
+                "name": "golang",
+                "type": "binary"
+            }
+        },
+        "kubernetes": {
+            "profile": {
+                "kind": "deployment",
+                "namespace": "devops",
+                "replicas": 3
+            },
+            "cluster": [{
+                "name": "aws_default",
+                "api": "https://10.200.1.16:6443"
+            }],
+            "helm": {
+                "url": "https://harbor.aws.ops.zhangyue-ops.com/chartrepo/devops",
+                "repo": "harbor-aws-devops",
+                "chart" : {
+                    "name": "algae",
+                    "version": "1.0.0"
+                }
+            }
+        },
+        "jenkins": {
+            "stage": {},
+            "email": {
+                "successful": ["shilei@zhangyue.com"],
+                "failure": [""],
+                "warning": [""]
+            }
+        }
+    },
+    "docker": {
+        "registry": "harbor.aws.ops.zhangyue-ops.com",
+        "organization": "devops",
+        "project": "algae"
+    }
+}
