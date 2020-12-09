@@ -1,4 +1,4 @@
-- [v0.0.1](#v11800)
+- [v0.0](#v000)
   - [Updated Instructions](#updated-instructions)
     - [v0.0.1 更新内容](#v001-更新内容)
     - [v0.0.2 更新内容](#v002-更新内容)
