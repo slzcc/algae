@@ -8,15 +8,15 @@ require (
 	golang.org/x/time v0.0.0-20200630173020-3af7569d3a1e // indirect
 	gopkg.in/igm/sockjs-go.v2 v2.1.0
 	gopkg.in/yaml.v2 v2.3.0
-	istio.io/client-go v1.8.0
-	k8s.io/api v0.19.4
-	k8s.io/apimachinery v0.19.4
-	k8s.io/client-go v0.19.4
-	k8s.io/metrics v0.19.4
+	istio.io/client-go v1.8.1
+	k8s.io/api v0.20.0
+	k8s.io/apimachinery v0.20.0
+	k8s.io/client-go v0.20.0
+	k8s.io/metrics v0.20.0
 )
 
 replace (
-	k8s.io/api => github.com/kubernetes/api v0.19.4
-	k8s.io/apimachinery => github.com/kubernetes/apimachinery v0.19.4
-	k8s.io/client-go => github.com/kubernetes/client-go v0.19.4
+	k8s.io/api => github.com/kubernetes/api v0.20.0
+	k8s.io/apimachinery => github.com/kubernetes/apimachinery v0.20.0
+	k8s.io/client-go => github.com/kubernetes/client-go v0.20.0
 )
