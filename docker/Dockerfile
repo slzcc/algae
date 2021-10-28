@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM harbor.aws.ops.zhangyue-ops.com/public/java:jdk-8u201-zh-supervisor
 
 WORKDIR /data
 
