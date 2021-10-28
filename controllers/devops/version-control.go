@@ -1,8 +1,13 @@
 package devops
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"log"
+	"net/http"
 )
 
 func GetHeaderByName(ctx *gin.Context, key string) string {
@@ -11,9 +16,9 @@ func GetHeaderByName(ctx *gin.Context, key string) string {
 
 func VersionControlEntrance(c *gin.Context) {
 
-	json := make(map[string]interface{})
-	c.BindJSON(&json)
-	log.Printf("json %v",&json)
+	_json := make(map[string]interface{})
+	c.BindJSON(&_json)
+	log.Printf("json %v",&_json)
 
 	buf := make([]byte, 1024)
 	n, _ := c.Request.Body.Read(buf)
@@ -23,9 +28,35 @@ func VersionControlEntrance(c *gin.Context) {
 	log.Printf("event %v", event)
 
 	token := GetHeaderByName(c, "X-Gitlab-Token")
-	log.Printf("event %v", token)
+	log.Printf("token %v", token)
 
-	c.JSON(200, json)
+	client := &http.Client{}
+	data, err := json.Marshal(_json)
+	if err != nil {
+		// handle error
+	}
+	reader := bytes.NewReader(data)
+	req, err := http.NewRequest("POST", "http://jenkins.aws.ops.zhangyue-ops.com/project/public/compile", reader)
+	if err != nil {
+		// handle error
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("X-Gitlab-Event", event)
+	req.Header.Set("X-Gitlab-Token", token)
+
+	resp, err := client.Do(req)
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		// handle error
+	}
+
+	fmt.Println(string(body))
+
+	c.JSON(200, _json)
 }
 
 func VersionControlExit(c *gin.Context) {
