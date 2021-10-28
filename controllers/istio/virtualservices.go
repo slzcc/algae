@@ -21,3 +21,18 @@ func VirtualServicesList(c *gin.Context) {
 
 	c.JSON(200, data)
 }
+
+func VirtualServicesInfo(c *gin.Context) {
+
+	namespace := c.Param("namespaces")
+	name := c.Param("name")
+
+	clientset := utils.IstioAuth()
+	data, err := clientset.NetworkingV1alpha3().VirtualServices(namespace).Get(context.TODO(), name, metav1.GetOptions{})
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	c.JSON(200, data)
+}

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/slzcc/algae/routers/devops"
 	"github.com/slzcc/algae/routers/istio"
 	"github.com/slzcc/algae/routers/k8s"
 	"github.com/slzcc/algae/routers/metrics"
@@ -21,6 +22,7 @@ func main() {
 	istio.LRouter(engine)
 	k8s.LRouter(engine)
 	metrics.LRouter(engine)
+	devops.LRouter(engine)
 
 	engine.Run(":5801")
 }

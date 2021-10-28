@@ -5,18 +5,26 @@ import (
 	"github.com/slzcc/algae/controllers/istio"
 )
 
-func VirtualServicesListInfo(router *gin.RouterGroup) {
+func VirtualServicesList(router *gin.RouterGroup) {
 	router.GET("/namespaces/:namespaces/virtualservices", istio.VirtualServicesList)
 }
 
-func GatewaysListInfo(router *gin.RouterGroup) {
+func VirtualServicesInfo(router *gin.RouterGroup) {
+	router.GET("/namespaces/:namespaces/virtualservices/:name", istio.VirtualServicesInfo)
+}
+
+func GatewaysList(router *gin.RouterGroup) {
 	router.GET("/namespaces/:namespaces/gateways", istio.GatewaysList)
 }
 
-func DestinationRulesListInfo(router *gin.RouterGroup) {
+func DestinationRulesList(router *gin.RouterGroup) {
 	router.GET("/namespaces/:namespaces/destinationrules", istio.DestinationRulesList)
 }
 
-func ServiceEntrysListInfo(router *gin.RouterGroup) {
+func DestinationRulesInfo(router *gin.RouterGroup) {
+	router.GET("/namespaces/:namespaces/destinationrules/:name", istio.DestinationRulesInfo)
+}
+
+func ServiceEntrysList(router *gin.RouterGroup) {
 	router.GET("/namespaces/:namespaces/serviceentrys", istio.ServiceEntrysList)
 }

@@ -23,20 +23,22 @@
                 "replicas": 1
             },
             "cluster": [{
-                "name": "aws_default",
-                "api": "https://10.200.1.16:6443"
+                "name": "aws_o",
+                "api": "https://kubernetes-apiserver-ops-27e0f6d2ba6186cd.elb.ap-southeast-1.amazonaws.com:6443"
             }],
             "helm": {
                 "url": "https://harbor.aws.ops.zhangyue-ops.com/chartrepo/devops",
-                "repo": "harbor-aws-devops",
+                "repo": "harbor-aws-haiwai",
                 "chart" : {
-                    "name": "algae",
+                    "name": "base-go",
                     "version": "1.0.0"
                 }
             }
         },
         "jenkins": {
-            "stage": {},
+            "stage": {
+                "helm": {"options": "--set volumeMounts[0].name=usr-local-timezone --set volumeMounts[0].mountPath=/usr/share/zoneinfo --set volumeMounts[0].readOnly=true --set volumes[0].name=usr-local-timezone --set volumes[0].hostPath.path=/usr/share/zoneinfo --set volumes[0].hostPath.type=DirectoryOrCreate"},
+            },
             "email": {
                 "successful": ["shilei@zhangyue.com"],
                 "failure": [""],
