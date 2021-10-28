@@ -14,20 +14,12 @@ func GetHeaderByName(ctx *gin.Context, key string) string {
 	return ctx.Request.Header.Get(key)
 }
 
-func VersionControlEntrance(c *gin.Context) {
-
+func RequestWebHooks(c *gin.Context) {
 	pause, _ := c.GetQuery("pause")
-	if pause != "" {
-		_pause, err := strconv.Atoi(pause)
-		if err != nil {
-			panic(err.Error())
-		}
-		time.Sleep(time.Duration(_pause) * time.Second)
-	}
 
 	_json := make(map[string]interface{})
 	c.BindJSON(&_json)
-	//log.Printf("json %v",&_json)
+	log.Printf("json %v",&_json)
 
 	// 获取 body
 	//buf := make([]byte, 1024)
@@ -35,10 +27,10 @@ func VersionControlEntrance(c *gin.Context) {
 	//log.Printf("buf %v",string(buf[0:n]))
 
 	event := GetHeaderByName(c, "X-Gitlab-Event")
-	//log.Printf("event %v", event)
+	log.Printf("event %v", event)
 
 	token := GetHeaderByName(c, "X-Gitlab-Token")
-	//log.Printf("token %v", token)
+	log.Printf("token %v", token)
 
 	client := &http.Client{}
 	data, err := json.Marshal(&_json)
@@ -55,21 +47,29 @@ func VersionControlEntrance(c *gin.Context) {
 	req.Header.Set("X-Gitlab-Event", event)
 	req.Header.Set("X-Gitlab-Token", token)
 
+	if pause != "" {
+		_pause, err := strconv.Atoi(pause)
+		if err != nil {
+			panic(err.Error())
+		}
+		time.Sleep(time.Duration(_pause) * time.Second)
+	}
+	
 	resp, err := client.Do(req)
 	if err != nil {
 		panic(err.Error())
 	}
 
 	defer resp.Body.Close()
+}
 
-	//body, err := ioutil.ReadAll(resp.Body)
-	//if err != nil {
-	//	panic(err.Error())
-	//}
+func VersionControlEntrance(c *gin.Context) {
+	go RequestWebHooks(c)
 
-	//log.Println(string(body))
+	var data string
+	data = "successful"
 
-	c.JSON(200, _json)
+	c.JSON(200, data)
 }
 
 func VersionControlExit(c *gin.Context) {
