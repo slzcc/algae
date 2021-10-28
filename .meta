@@ -37,7 +37,7 @@
         },
         "jenkins": {
             "stage": {
-                "helm": {"options": "--set volumeMounts[0].name=usr-local-timezone --set volumeMounts[0].mountPath=/usr/share/zoneinfo --set volumeMounts[0].readOnly=true --set volumes[0].name=usr-local-timezone --set volumes[0].hostPath.path=/usr/share/zoneinfo --set volumes[0].hostPath.type=DirectoryOrCreate"},
+                "helm": {"options": "--set volumeMounts[0].name=usr-local-timezone --set volumeMounts[0].mountPath=/usr/share/zoneinfo --set volumeMounts[0].readOnly=true --set volumes[0].name=usr-local-timezone --set volumes[0].hostPath.path=/usr/share/zoneinfo --set volumes[0].hostPath.type=DirectoryOrCreate"}
             },
             "email": {
                 "successful": ["shilei@zhangyue.com"],
