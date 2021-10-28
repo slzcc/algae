@@ -3,7 +3,6 @@ package devops
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
@@ -31,7 +30,7 @@ func VersionControlEntrance(c *gin.Context) {
 	log.Printf("token %v", token)
 
 	client := &http.Client{}
-	data, err := json.Marshal(_json)
+	data, err := json.Marshal(&_json)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -57,7 +56,7 @@ func VersionControlEntrance(c *gin.Context) {
 		panic(err.Error())
 	}
 
-	fmt.Println(string(body))
+	log.Println(string(body))
 
 	c.JSON(200, _json)
 }
