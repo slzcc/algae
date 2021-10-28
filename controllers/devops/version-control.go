@@ -33,12 +33,12 @@ func VersionControlEntrance(c *gin.Context) {
 	client := &http.Client{}
 	data, err := json.Marshal(_json)
 	if err != nil {
-		// handle error
+		panic(err.Error())
 	}
 	reader := bytes.NewReader(data)
 	req, err := http.NewRequest("POST", "http://jenkins.aws.ops.zhangyue-ops.com/project/public/compile", reader)
 	if err != nil {
-		// handle error
+		panic(err.Error())
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -46,12 +46,15 @@ func VersionControlEntrance(c *gin.Context) {
 	req.Header.Set("X-Gitlab-Token", token)
 
 	resp, err := client.Do(req)
+	if err != nil {
+		panic(err.Error())
+	}
 
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		// handle error
+		panic(err.Error())
 	}
 
 	fmt.Println(string(body))
