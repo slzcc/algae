@@ -27,7 +27,7 @@
                 "api": "https://kubernetes-apiserver-ops-27e0f6d2ba6186cd.elb.ap-southeast-1.amazonaws.com:6443"
             }],
             "helm": {
-                "url": "https://harbor.aws.ops.zhangyue-ops.com/chartrepo/devops",
+                "url": "https://harbor.aws.ops.zhangyue-ops.com/chartrepo/haiwai",
                 "repo": "harbor-aws-haiwai",
                 "chart" : {
                     "name": "base-go",
