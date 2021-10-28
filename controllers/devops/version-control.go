@@ -18,7 +18,7 @@ func RequestWebHooks(c *gin.Context) {
 	pause, _ := c.GetQuery("pause")
 
 	_json := make(map[string]interface{})
-	c.BindJSON(&_json)
+	c.ShouldBind(&_json)
 	log.Printf("json %v",&_json)
 
 	// 获取 body
@@ -54,7 +54,7 @@ func RequestWebHooks(c *gin.Context) {
 		}
 		time.Sleep(time.Duration(_pause) * time.Second)
 	}
-	
+
 	resp, err := client.Do(req)
 	if err != nil {
 		panic(err.Error())
