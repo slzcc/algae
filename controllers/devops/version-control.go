@@ -9,7 +9,11 @@ func VersionControlEntrance(c *gin.Context) {
 
 	json := make(map[string]interface{})
 	c.BindJSON(&json)
-	log.Printf("%v",&json)
+	log.Printf("json %v",&json)
+
+	buf := make([]byte, 1024)
+	n, _ := c.Request.Body.Read(buf)
+	log.Printf("buf %v",string(buf[0:n]))
 
 	c.JSON(200, json)
 }
