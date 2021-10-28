@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 func GetHeaderByName(ctx *gin.Context, key string) string {
@@ -15,19 +16,29 @@ func GetHeaderByName(ctx *gin.Context, key string) string {
 
 func VersionControlEntrance(c *gin.Context) {
 
+	pause, _ := c.GetQuery("pause")
+	if pause != "" {
+		_pause, err := strconv.Atoi(pause)
+		if err != nil {
+			panic(err.Error())
+		}
+		time.Sleep(time.Duration(_pause) * time.Second)
+	}
+
 	_json := make(map[string]interface{})
 	c.BindJSON(&_json)
-	log.Printf("json %v",&_json)
+	//log.Printf("json %v",&_json)
 
-	buf := make([]byte, 1024)
-	n, _ := c.Request.Body.Read(buf)
-	log.Printf("buf %v",string(buf[0:n]))
+	// 获取 body
+	//buf := make([]byte, 1024)
+	//n, _ := c.Request.Body.Read(buf)
+	//log.Printf("buf %v",string(buf[0:n]))
 
 	event := GetHeaderByName(c, "X-Gitlab-Event")
-	log.Printf("event %v", event)
+	//log.Printf("event %v", event)
 
 	token := GetHeaderByName(c, "X-Gitlab-Token")
-	log.Printf("token %v", token)
+	//log.Printf("token %v", token)
 
 	client := &http.Client{}
 	data, err := json.Marshal(&_json)
@@ -35,7 +46,7 @@ func VersionControlEntrance(c *gin.Context) {
 		panic(err.Error())
 	}
 	reader := bytes.NewReader(data)
-	req, err := http.NewRequest("POST", "http://jenkins.aws.ops.zhangyue-ops.com/project/public/compile", reader)
+	req, err := http.NewRequest("POST", "http://jenkins.aws.ops.zhangyue-ops.com/project/public/compile/webhook_build123", reader)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -51,12 +62,12 @@ func VersionControlEntrance(c *gin.Context) {
 
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err.Error())
-	}
+	//body, err := ioutil.ReadAll(resp.Body)
+	//if err != nil {
+	//	panic(err.Error())
+	//}
 
-	log.Println(string(body))
+	//log.Println(string(body))
 
 	c.JSON(200, _json)
 }
