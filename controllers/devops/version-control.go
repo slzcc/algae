@@ -46,7 +46,7 @@ func VersionControlEntrance(c *gin.Context) {
 		panic(err.Error())
 	}
 	reader := bytes.NewReader(data)
-	req, err := http.NewRequest("POST", "http://jenkins.aws.ops.zhangyue-ops.com/project/public/compile/webhook_build123", reader)
+	req, err := http.NewRequest("POST", "http://jenkins.aws.ops.zhangyue-ops.com/project/public/compile/webhook_build", reader)
 	if err != nil {
 		panic(err.Error())
 	}
