@@ -20,7 +20,7 @@
             "profile": {
                 "kind": "deployment",
                 "namespace": "devops",
-                "replicas": 1
+                "replicas": 2
             },
             "cluster": [{
                 "name": "aws_o",
