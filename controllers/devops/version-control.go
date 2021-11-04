@@ -3,9 +3,7 @@ package devops
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -16,7 +14,17 @@ func GetHeaderByName(ctx *gin.Context, key string) string {
 	return ctx.Request.Header.Get(key)
 }
 
-func RequestWebHooks(c *gin.Context) {
+func RequestWebHooks(c *http.Client, r *http.Request) {
+
+	resp, err := c.Do(r)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer resp.Body.Close()
+}
+
+func VersionControlEntrance(c *gin.Context) {
 	pause, _ := c.GetQuery("pause")
 
 	_json := make(map[string]interface{})
@@ -36,11 +44,12 @@ func RequestWebHooks(c *gin.Context) {
 	log.Printf("token %v", token)
 
 	client := &http.Client{}
-	data, err := json.Marshal(&_json)
+	_data, err := json.Marshal(&_json)
+
 	if err != nil {
 		panic(err.Error())
 	}
-	reader := bytes.NewReader(data)
+	reader := bytes.NewReader(_data)
 	req, err := http.NewRequest("POST", "http://jenkins.aws.ops.zhangyue-ops.com/project/public/compile/webhook_build", reader)
 	if err != nil {
 		panic(err.Error())
@@ -57,20 +66,10 @@ func RequestWebHooks(c *gin.Context) {
 		}
 		time.Sleep(time.Duration(_pause) * time.Second)
 	}
+	//_data, _ := ioutil.ReadAll(c.Request.Body)
+	//fmt.Printf("ctx.Request.body: %v", string(_data))
 
-	resp, err := client.Do(req)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	defer resp.Body.Close()
-}
-
-func VersionControlEntrance(c *gin.Context) {
-	go RequestWebHooks(c)
-
-	_data, _ := ioutil.ReadAll(c.Request.Body)
-	fmt.Printf("ctx.Request.body: %v", string(_data))
+	go RequestWebHooks(client, req)
 
 	var data string
 	data = "successful"
