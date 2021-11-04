@@ -36,8 +36,6 @@ func RequestWebHooks(body []byte, event, token, pause string) {
 		}
 		time.Sleep(time.Duration(_pause) * time.Second)
 	}
-	//_data, _ := ioutil.ReadAll(c.Request.Body)
-	//fmt.Printf("ctx.Request.body: %v", string(_data))
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -53,7 +51,7 @@ func VersionControlEntrance(c *gin.Context) {
 	_json := make(map[string]interface{})
 	c.ShouldBind(&_json)
 	//c.BindJSON(&_json)
-	log.Printf("json %v",&_json)
+	//log.Printf("json %v",&_json)
 
 	event := GetHeaderByName(c, "X-Gitlab-Event")
 	log.Printf("event %v", event)
@@ -62,14 +60,10 @@ func VersionControlEntrance(c *gin.Context) {
 	log.Printf("token %v", token)
 
 	_data, err := json.Marshal(&_json)
+	print(_data)
 	if err != nil {
 		panic(err.Error())
 	}
-
-	// 获取 body
-	//buf := make([]byte, 1024)
-	//n, _ := c.Request.Body.Read(buf)
-	//log.Printf("buf %v",string(buf[0:n]))
 
 	go RequestWebHooks(_data, event, token, pause)
 
