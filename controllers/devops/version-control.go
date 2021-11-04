@@ -24,9 +24,6 @@ func RequestWebHooks(c *gin.Context) {
 	//c.BindJSON(&_json)
 	log.Printf("json %v",&_json)
 
-	data, _ := ioutil.ReadAll(c.Request.Body)
-	fmt.Printf("ctx.Request.body: %v", string(data))
-
 	// 获取 body
 	//buf := make([]byte, 1024)
 	//n, _ := c.Request.Body.Read(buf)
@@ -71,6 +68,9 @@ func RequestWebHooks(c *gin.Context) {
 
 func VersionControlEntrance(c *gin.Context) {
 	go RequestWebHooks(c)
+
+	_data, _ := ioutil.ReadAll(c.Request.Body)
+	fmt.Printf("ctx.Request.body: %v", string(_data))
 
 	var data string
 	data = "successful"
