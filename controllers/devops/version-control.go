@@ -14,42 +14,12 @@ func GetHeaderByName(ctx *gin.Context, key string) string {
 	return ctx.Request.Header.Get(key)
 }
 
-func RequestWebHooks(c *http.Client, r *http.Request) {
-
-	resp, err := c.Do(r)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	defer resp.Body.Close()
-}
-
-func VersionControlEntrance(c *gin.Context) {
-	pause, _ := c.GetQuery("pause")
-
-	_json := make(map[string]interface{})
-	c.ShouldBind(&_json)
-	//c.BindJSON(&_json)
-	log.Printf("json %v",&_json)
-
-	// 获取 body
-	//buf := make([]byte, 1024)
-	//n, _ := c.Request.Body.Read(buf)
-	//log.Printf("buf %v",string(buf[0:n]))
-
-	event := GetHeaderByName(c, "X-Gitlab-Event")
-	log.Printf("event %v", event)
-
-	token := GetHeaderByName(c, "X-Gitlab-Token")
-	log.Printf("token %v", token)
+func RequestWebHooks(body []byte, event, token, pause string) {
 
 	client := &http.Client{}
-	_data, err := json.Marshal(&_json)
 
-	if err != nil {
-		panic(err.Error())
-	}
-	reader := bytes.NewReader(_data)
+	reader := bytes.NewReader(body)
+
 	req, err := http.NewRequest("POST", "http://jenkins.aws.ops.zhangyue-ops.com/project/public/compile/webhook_build", reader)
 	if err != nil {
 		panic(err.Error())
@@ -69,7 +39,39 @@ func VersionControlEntrance(c *gin.Context) {
 	//_data, _ := ioutil.ReadAll(c.Request.Body)
 	//fmt.Printf("ctx.Request.body: %v", string(_data))
 
-	go RequestWebHooks(client, req)
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer resp.Body.Close()
+}
+
+func VersionControlEntrance(c *gin.Context) {
+	pause, _ := c.GetQuery("pause")
+
+	_json := make(map[string]interface{})
+	c.ShouldBind(&_json)
+	//c.BindJSON(&_json)
+	log.Printf("json %v",&_json)
+
+	event := GetHeaderByName(c, "X-Gitlab-Event")
+	log.Printf("event %v", event)
+
+	token := GetHeaderByName(c, "X-Gitlab-Token")
+	log.Printf("token %v", token)
+
+	_data, err := json.Marshal(&_json)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	// 获取 body
+	//buf := make([]byte, 1024)
+	//n, _ := c.Request.Body.Read(buf)
+	//log.Printf("buf %v",string(buf[0:n]))
+
+	go RequestWebHooks(_data, event, token, pause)
 
 	var data string
 	data = "successful"
