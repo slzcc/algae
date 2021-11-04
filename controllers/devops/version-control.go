@@ -3,7 +3,9 @@ package devops
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
@@ -19,7 +21,11 @@ func RequestWebHooks(c *gin.Context) {
 
 	_json := make(map[string]interface{})
 	c.ShouldBind(&_json)
+	//c.BindJSON(&_json)
 	log.Printf("json %v",&_json)
+
+	data, _ := ioutil.ReadAll(c.Request.Body)
+	fmt.Printf("ctx.Request.body: %v", string(data))
 
 	// 获取 body
 	//buf := make([]byte, 1024)
